@@ -5,23 +5,41 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Haxdags - Haxball Stats</title>
     <style>
-        body { font-family: Arial, sans-serif; margin: 0; padding: 0; text-align: center; background-color: #f4f4f9; color: #333; }
-        header { background: #333; color: #fff; padding: 1em; }
-        h1 { margin: 0; }
-        .counter, .top-scorers { padding: 20px; }
-        .counter h2, .top-scorers h2 { color: #444; }
-        .team-stats { display: flex; justify-content: center; gap: 40px; padding: 10px 0; }
-        .team { background: #ddd; padding: 15px; border-radius: 8px; width: 150px; cursor: pointer; }
-        .team h3 { margin: 0; font-size: 1em; color: #333; }
-        .team p { font-size: 1.5em; margin: 5px 0; font-weight: bold; }
-        .top-scorers ul { list-style: none; padding: 0; }
-        .top-scorers li { font-size: 1.1em; margin: 5px 0; display: flex; justify-content: space-between; max-width: 300px; margin: 0 auto; cursor: pointer; }
+        /* General Body Styles */
+        body { font-family: Arial, sans-serif; margin: 0; padding: 0; text-align: center; background-color: #e6e6e6; color: #333; }
+        
+        /* Header Styles */
+        header { background: #37003c; color: #fff; padding: 1em; }
+        h1 { margin: 0; font-size: 1.8em; font-weight: bold; }
+
+        /* Admin Controls */
         .admin-controls { padding: 10px; }
+
+        /* Tournament Counter Section */
+        .counter { padding: 20px; }
+        .counter h2 { color: #37003c; margin-bottom: 15px; font-size: 1.6em; }
+
+        /* Team Stats Styling */
+        .team-stats { display: flex; justify-content: center; gap: 20px; padding: 20px; }
+        .team { background: #fff; padding: 20px; border-radius: 8px; width: 160px; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); cursor: pointer; }
+        .team h3 { margin: 0; font-size: 1em; color: #555; }
+        .team p { font-size: 2.5em; margin: 5px 0; font-weight: bold; color: #37003c; }
+
+        /* Top Scorers Section */
+        .top-scorers { background-color: #fff; padding: 20px; margin: 20px auto; width: 90%; max-width: 600px; border-radius: 8px; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); }
+        .top-scorers h2 { color: #37003c; margin-bottom: 15px; font-size: 1.6em; }
+        .top-scorers ul { list-style: none; padding: 0; }
+        .top-scorers li { font-size: 1.1em; margin: 10px 0; display: flex; justify-content: space-between; padding: 10px; border-bottom: 1px solid #ddd; }
+        .top-scorers li span { font-weight: bold; }
+        .top-scorers li:last-child { border-bottom: none; }
+
+        /* Footer Styles */
+        footer { margin-top: 20px; padding: 10px; background: #37003c; color: #fff; font-size: 0.8em; }
     </style>
 </head>
 <body>
     <header>
-        <h1>Haxdags - Haxball Stats</h1>
+        <h1>Haxdags - Haxball Tournament Stats</h1>
     </header>
 
     <div class="admin-controls">
@@ -50,12 +68,12 @@
     <section class="top-scorers">
         <h2>Top Goal Scorers</h2>
         <ul id="scorersList">
-            <li onclick="updateScore('Foos')">Foos <span id="Foos">3</span></li>
-            <li onclick="updateScore('Arne')">Arne <span id="Arne">2</span></li>
-            <li onclick="updateScore('Totti')">Totti <span id="Totti">2</span></li>
-            <li onclick="updateScore('LilGub')">Lil' Gub <span id="LilGub">1</span></li>
-            <li onclick="updateScore('Ljungo')">Ljungo <span id="Ljungo">1</span></li>
-            <li onclick="updateScore('Raz')">Raz <span id="Raz">0</span></li>
+            <li onclick="updateScore('Foos')"><span>Foos</span> <span id="Foos">3</span></li>
+            <li onclick="updateScore('Arne')"><span>Arne</span> <span id="Arne">2</span></li>
+            <li onclick="updateScore('Totti')"><span>Totti</span> <span id="Totti">2</span></li>
+            <li onclick="updateScore('LilGub')"><span>Lil' Gub</span> <span id="LilGub">1</span></li>
+            <li onclick="updateScore('Ljungo')"><span>Ljungo</span> <span id="Ljungo">1</span></li>
+            <li onclick="updateScore('Raz')"><span>Raz</span> <span id="Raz">0</span></li>
         </ul>
     </section>
 
