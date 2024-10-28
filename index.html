@@ -12,7 +12,7 @@
         .counter h2, .top-scorers h2 { color: #444; }
         .team-stats { display: flex; justify-content: center; gap: 40px; padding: 10px 0; }
         .team { background: #ddd; padding: 15px; border-radius: 8px; width: 150px; cursor: pointer; }
-        .team h3 { margin: 0; font-size: 1.2em; }
+        .team h3 { margin: 0; font-size: 1em; color: #333; }
         .team p { font-size: 1.5em; margin: 5px 0; font-weight: bold; }
         .top-scorers ul { list-style: none; padding: 0; }
         .top-scorers li { font-size: 1.1em; margin: 5px 0; display: flex; justify-content: space-between; max-width: 300px; margin: 0 auto; cursor: pointer; }
@@ -32,13 +32,17 @@
     <section class="counter">
         <h2>Tournament Vecka 44</h2>
         <div class="team-stats">
-            <div class="team" id="teamLeft" onclick="updateScore('teamLeft')">
+            <div>
                 <h3>Vänsterblivna</h3>
-                <p id="scoreLeft">1</p>
+                <div class="team" id="teamLeft" onclick="updateScore('teamLeft')">
+                    <p id="scoreLeft">1</p>
+                </div>
             </div>
-            <div class="team" id="teamRight" onclick="updateScore('teamRight')">
-                <h3>Högerblivna</h3>
-                <p id="scoreRight">2</p>
+            <div>
+                <h3>Högerspöken</h3>
+                <div class="team" id="teamRight" onclick="updateScore('teamRight')">
+                    <p id="scoreRight">2</p>
+                </div>
             </div>
         </div>
     </section>
