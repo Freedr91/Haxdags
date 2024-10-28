@@ -3,138 +3,87 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Haxdags - Haxball Stats</title>
+    <title>Haxdags - Draw Your Team Emblem</title>
     <style>
-        /* General Body and Background Styles */
-        body { font-family: Arial, sans-serif; margin: 0; padding: 0; text-align: center; background-color: #e6e6e6; color: #333; }
-        body:before { content: ""; background: url('https://www.transparenttextures.com/patterns/green-stripes.png'); position: fixed; top: 0; left: 0; height: 100%; width: 100%; opacity: 0.1; z-index: -1; }
-
-        /* Header Styles */
-        header { background: #37003c; color: #fff; padding: 1em; display: flex; align-items: center; justify-content: center; gap: 10px; }
-        h1 { margin: 0; font-size: 1.8em; font-weight: bold; }
-        .football-icon { width: 30px; height: 30px; }
-
-        /* Admin Controls */
-        .admin-controls { padding: 10px; }
-
-        /* Tournament Counter Section */
-        .counter { padding: 20px; }
-        .counter h2 { color: #37003c; margin-bottom: 15px; font-size: 1.6em; }
-
-        /* Team Stats Styling */
-        .team-stats { display: flex; justify-content: center; gap: 40px; padding: 20px; }
-        .team { background: #fff; padding: 20px; border-radius: 8px; width: 160px; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); cursor: pointer; }
-        .team h3 { margin: 5px 0; font-size: 1em; color: #555; }
-        .team img { width: 500px; height: 700px; margin-bottom: 10px; }
-        .team p { font-size: 2.5em; margin: 5px 0; font-weight: bold; color: #37003c; position: relative; }
-        .team p:before { content: "⚽"; position: absolute; left: -25px; font-size: 1em; color: #555; }
-
-        /* Top Scorers Section */
-        .top-scorers { background-color: #fff; padding: 20px; margin: 20px auto; width: 90%; max-width: 600px; border-radius: 8px; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); }
-        .top-scorers h2 { color: #37003c; margin-bottom: 15px; font-size: 1.6em; }
-        .top-scorers ul { list-style: none; padding: 0; }
-        .top-scorers li { font-size: 1.1em; margin: 10px 0; display: flex; justify-content: space-between; padding: 10px; border-bottom: 1px solid #ddd; }
-        .top-scorers li:last-child { border-bottom: none; }
-
-        /* Footer Styles */
-        footer { margin-top: 20px; padding: 10px; background: #37003c; color: #fff; font-size: 0.8em; }
+        body { font-family: Arial, sans-serif; text-align: center; background-color: #f0f0f5; color: #333; }
+        h1 { color: #37003c; }
+        #drawingCanvas { border: 2px solid #37003c; background: #fff; cursor: crosshair; }
+        .controls { margin: 15px; }
+        .button { padding: 8px 12px; margin: 5px; background-color: #37003c; color: #fff; border: none; cursor: pointer; }
+        .button:disabled { background-color: #aaa; }
     </style>
 </head>
 <body>
-    <header>
-        <img src="https://upload.wikimedia.org/wikipedia/commons/6/6e/Soccer_ball_32_panel.svg" alt="Football Icon" class="football-icon">
-        <h1>Haxdags - Haxball Tournament Stats</h1>
-    </header>
+    <h1>Haxdags - Draw Your Team Emblem</h1>
 
-    <div class="admin-controls">
-        <button onclick="toggleEditMode()">Toggle Edit Mode</button>
-        <input type="password" id="adminPassword" placeholder="Enter password" style="display:none;" onkeypress="checkPassword(event)">
+    <canvas id="drawingCanvas" width="200" height="200"></canvas>
+
+    <div class="controls">
+        <label for="colorPicker">Brush Color: </label>
+        <input type="color" id="colorPicker" value="#000000">
+        <label for="brushSize">Brush Size: </label>
+        <input type="number" id="brushSize" value="3" min="1" max="10">
+        <button class="button" onclick="clearCanvas()">Clear</button>
+        <button class="button" onclick="saveDrawing()">Save</button>
     </div>
 
-    <section class="counter">
-        <h2>Tournament Vecka 44</h2>
-        <div class="team-stats">
-            <div>
-                <!-- Vänsterblivna BOIS Badge -->
-                <img src="sandbox:/mnt/data/Vansterblivna.png" alt="Vänsterblivna BOIS Badge">
-                <h3>Vänsterblivna BOIS</h3>
-                <div class="team" id="teamLeft" onclick="updateScore('teamLeft')">
-                    <p id="scoreLeft">1</p>
-                </div>
-            </div>
-            <div>
-                <!-- Högerspöken BK Badge -->
-                <img src="sandbox:/mnt/data/Hogerspoken.png" alt="Högerspöken BK Badge">
-                <h3>Högerspöken BK</h3>
-                <div class="team" id="teamRight" onclick="updateScore('teamRight')">
-                    <p id="scoreRight">2</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section class="top-scorers">
-        <h2>Top Goal Scorers</h2>
-        <ul id="scorersList">
-            <li onclick="updateScore('Foos')">Foos <span id="Foos">3</span></li>
-            <li onclick="updateScore('Arne')">Arne <span id="Arne">2</span></li>
-            <li onclick="updateScore('Totti')">Totti <span id="Totti">2</span></li>
-            <li onclick="updateScore('LilGub')">Lil' Gub <span id="LilGub">1</span></li>
-            <li onclick="updateScore('Ljungo')">Ljungo <span id="Ljungo">1</span></li>
-            <li onclick="updateScore('Raz')">Raz <span id="Raz">0</span></li>
-        </ul>
-    </section>
-
-    <footer>
-        <p>&copy; 2023 Haxdags. All rights reserved.</p>
-    </footer>
+    <h2>Saved Emblem</h2>
+    <img id="savedEmblem" src="" alt="Your saved emblem will appear here">
 
     <script>
-        const password = "yourPassword"; // Change to your desired password
-        let editMode = false;
+        const canvas = document.getElementById('drawingCanvas');
+        const ctx = canvas.getContext('2d');
+        const colorPicker = document.getElementById('colorPicker');
+        const brushSize = document.getElementById('brushSize');
+        const savedEmblem = document.getElementById('savedEmblem');
 
-        // Load saved scores from localStorage
+        let isDrawing = false;
+
+        // Load saved emblem if exists
         window.onload = () => {
-            const elements = ['teamLeft', 'teamRight', 'Foos', 'Arne', 'Totti', 'LilGub', 'Ljungo', 'Raz'];
-            elements.forEach(id => {
-                const savedScore = localStorage.getItem(id);
-                if (savedScore !== null) document.getElementById(id).textContent = savedScore;
-            });
+            const savedImage = localStorage.getItem('emblem');
+            if (savedImage) {
+                savedEmblem.src = savedImage;
+            }
         };
 
-        function toggleEditMode() {
-            if (!editMode) {
-                document.getElementById("adminPassword").style.display = "inline";
-            } else {
-                editMode = false;
-                document.getElementById("adminPassword").style.display = "none";
-                alert("Edit mode disabled.");
+        canvas.addEventListener('mousedown', (e) => {
+            isDrawing = true;
+            ctx.beginPath();
+            ctx.moveTo(e.offsetX, e.offsetY);
+        });
+
+        canvas.addEventListener('mousemove', (e) => {
+            if (isDrawing) {
+                ctx.lineTo(e.offsetX, e.offsetY);
+                ctx.strokeStyle = colorPicker.value;
+                ctx.lineWidth = brushSize.value;
+                ctx.lineCap = 'round';
+                ctx.stroke();
             }
+        });
+
+        canvas.addEventListener('mouseup', () => {
+            isDrawing = false;
+            ctx.closePath();
+        });
+
+        canvas.addEventListener('mouseleave', () => {
+            isDrawing = false;
+            ctx.closePath();
+        });
+
+        // Clear the canvas
+        function clearCanvas() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
         }
 
-        function checkPassword(event) {
-            if (event.key === "Enter") {
-                if (event.target.value === password) {
-                    editMode = true;
-                    event.target.value = "";
-                    event.target.style.display = "none";
-                    alert("Edit mode enabled.");
-                } else {
-                    alert("Incorrect password.");
-                }
-            }
-        }
-
-        function updateScore(id) {
-            if (!editMode) return;
-
-            const currentScore = parseInt(document.getElementById(id).textContent, 10);
-            const newScore = prompt(`Enter new score for ${id}:`, currentScore);
-
-            if (newScore !== null && !isNaN(newScore)) {
-                document.getElementById(id).textContent = newScore;
-                localStorage.setItem(id, newScore); // Save to localStorage
-            }
+        // Save the drawing to localStorage
+        function saveDrawing() {
+            const dataURL = canvas.toDataURL();
+            localStorage.setItem('emblem', dataURL);
+            savedEmblem.src = dataURL;
+            alert('Emblem saved! It will be visible to other visitors on this device.');
         }
     </script>
 </body>
