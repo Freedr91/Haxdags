@@ -11,11 +11,12 @@
         .counter, .top-scorers { padding: 20px; }
         .counter h2, .top-scorers h2 { color: #444; }
         .team-stats { display: flex; justify-content: center; gap: 40px; padding: 10px 0; }
-        .team { background: #ddd; padding: 15px; border-radius: 8px; width: 150px; }
+        .team { background: #ddd; padding: 15px; border-radius: 8px; width: 150px; cursor: pointer; }
         .team h3 { margin: 0; font-size: 1.2em; }
         .team p { font-size: 1.5em; margin: 5px 0; font-weight: bold; }
         .top-scorers ul { list-style: none; padding: 0; }
-        .top-scorers li { font-size: 1.1em; margin: 5px 0; display: flex; justify-content: space-between; max-width: 300px; margin: 0 auto; }
+        .top-scorers li { font-size: 1.1em; margin: 5px 0; display: flex; justify-content: space-between; max-width: 300px; margin: 0 auto; cursor: pointer; }
+        .admin-controls { padding: 10px; }
     </style>
 </head>
 <body>
@@ -23,34 +24,88 @@
         <h1>Haxdags - Haxball Stats</h1>
     </header>
 
+    <div class="admin-controls">
+        <button onclick="toggleEditMode()">Toggle Edit Mode</button>
+        <input type="password" id="adminPassword" placeholder="Enter password" style="display:none;" onkeypress="checkPassword(event)">
+    </div>
+
     <section class="counter">
         <h2>Tournament Vecka 44</h2>
         <div class="team-stats">
-            <div class="team">
+            <div class="team" id="teamLeft" onclick="updateScore('teamLeft')">
                 <h3>Vänsterblivna</h3>
-                <p>1</p>
+                <p id="scoreLeft">1</p>
             </div>
-            <div class="team">
+            <div class="team" id="teamRight" onclick="updateScore('teamRight')">
                 <h3>Högerblivna</h3>
-                <p>2</p>
+                <p id="scoreRight">2</p>
             </div>
         </div>
     </section>
 
     <section class="top-scorers">
         <h2>Top Goal Scorers</h2>
-        <ul>
-            <li><span>Foos</span> <span>3</span></li>
-            <li><span>Arne</span> <span>2</span></li>
-            <li><span>Totti</span> <span>2</span></li>
-            <li><span>Lil' Gub</span> <span>1</span></li>
-            <li><span>Ljungo</span> <span>1</span></li>
-            <li><span>Raz</span> <span>0</span></li>
+        <ul id="scorersList">
+            <li onclick="updateScore('Foos')">Foos <span id="Foos">3</span></li>
+            <li onclick="updateScore('Arne')">Arne <span id="Arne">2</span></li>
+            <li onclick="updateScore('Totti')">Totti <span id="Totti">2</span></li>
+            <li onclick="updateScore('LilGub')">Lil' Gub <span id="LilGub">1</span></li>
+            <li onclick="updateScore('Ljungo')">Ljungo <span id="Ljungo">1</span></li>
+            <li onclick="updateScore('Raz')">Raz <span id="Raz">0</span></li>
         </ul>
     </section>
 
     <footer>
         <p>&copy; 2023 Haxdags. All rights reserved.</p>
     </footer>
+
+    <script>
+        const password = "yourPassword"; // Change to your desired password
+        let editMode = false;
+
+        // Load saved scores from localStorage
+        window.onload = () => {
+            const elements = ['teamLeft', 'teamRight', 'Foos', 'Arne', 'Totti', 'LilGub', 'Ljungo', 'Raz'];
+            elements.forEach(id => {
+                const savedScore = localStorage.getItem(id);
+                if (savedScore !== null) document.getElementById(id).textContent = savedScore;
+            });
+        };
+
+        function toggleEditMode() {
+            if (!editMode) {
+                document.getElementById("adminPassword").style.display = "inline";
+            } else {
+                editMode = false;
+                document.getElementById("adminPassword").style.display = "none";
+                alert("Edit mode disabled.");
+            }
+        }
+
+        function checkPassword(event) {
+            if (event.key === "Enter") {
+                if (event.target.value === password) {
+                    editMode = true;
+                    event.target.value = "";
+                    event.target.style.display = "none";
+                    alert("Edit mode enabled.");
+                } else {
+                    alert("Incorrect password.");
+                }
+            }
+        }
+
+        function updateScore(id) {
+            if (!editMode) return;
+
+            const currentScore = parseInt(document.getElementById(id).textContent, 10);
+            const newScore = prompt(`Enter new score for ${id}:`, currentScore);
+
+            if (newScore !== null && !isNaN(newScore)) {
+                document.getElementById(id).textContent = newScore;
+                localStorage.setItem(id, newScore); // Save to localStorage
+            }
+        }
+    </script>
 </body>
 </html>
