@@ -3,34 +3,87 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Haxdags - Draw Your Team Emblem</title>
+    <title>Haxdags - Haxball Stats and Custom Emblems</title>
     <style>
-        body { font-family: Arial, sans-serif; text-align: center; background-color: #f0f0f5; color: #333; }
-        h1 { color: #37003c; }
-        #drawingCanvas { border: 2px solid #37003c; background: #fff; cursor: crosshair; }
+        /* General Body and Background Styles */
+        body { font-family: Arial, sans-serif; margin: 0; padding: 0; text-align: center; background-color: #f0f0f5; color: #333; }
+        header { background: #37003c; color: #fff; padding: 1em; }
+        h1 { font-size: 1.8em; font-weight: bold; }
+        h2 { color: #37003c; }
+        #drawingCanvas { border: 2px solid #37003c; background: #fff; cursor: crosshair; margin-top: 20px; }
+
+        /* Team Stats Styling */
+        .team-stats, .canvas-container { display: flex; justify-content: center; gap: 40px; padding: 20px; }
+        .team { background: #fff; padding: 20px; border-radius: 8px; width: 160px; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); }
+        .team h3 { margin: 5px 0; font-size: 1.2em; color: #555; }
+        .team p { font-size: 2.5em; margin: 5px 0; font-weight: bold; color: #37003c; }
+
+        /* Top Scorers Section */
+        .top-scorers { background-color: #fff; padding: 20px; margin: 20px auto; width: 90%; max-width: 600px; border-radius: 8px; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); }
+        .top-scorers ul { list-style: none; padding: 0; }
+        .top-scorers li { font-size: 1.1em; margin: 10px 0; display: flex; justify-content: space-between; padding: 10px; border-bottom: 1px solid #ddd; }
+        .top-scorers li:last-child { border-bottom: none; }
+
+        /* Controls and Buttons */
         .controls { margin: 15px; }
         .button { padding: 8px 12px; margin: 5px; background-color: #37003c; color: #fff; border: none; cursor: pointer; }
         .button:disabled { background-color: #aaa; }
     </style>
 </head>
 <body>
-    <h1>Haxdags - Draw Your Team Emblem</h1>
+    <header>
+        <h1>Haxdags - Haxball Tournament Stats & Custom Emblems</h1>
+    </header>
 
-    <canvas id="drawingCanvas" width="200" height="200"></canvas>
+    <section class="counter">
+        <h2>Tournament Vecka 44</h2>
+        <div class="team-stats">
+            <div class="team">
+                <h3>Vänsterblivna BOIS</h3>
+                <p id="teamLeft">1</p>
+            </div>
+            <div class="team">
+                <h3>Högerspöken BK</h3>
+                <p id="teamRight">2</p>
+            </div>
+        </div>
+    </section>
 
-    <div class="controls">
-        <label for="colorPicker">Brush Color: </label>
-        <input type="color" id="colorPicker" value="#000000">
-        <label for="brushSize">Brush Size: </label>
-        <input type="number" id="brushSize" value="3" min="1" max="10">
-        <button class="button" onclick="clearCanvas()">Clear</button>
-        <button class="button" onclick="saveDrawing()">Save</button>
-    </div>
+    <section class="top-scorers">
+        <h2>Top Goal Scorers</h2>
+        <ul id="scorersList">
+            <li>Foos <span id="Foos">3</span></li>
+            <li>Arne <span id="Arne">2</span></li>
+            <li>Totti <span id="Totti">2</span></li>
+            <li>Lil' Gub <span id="LilGub">1</span></li>
+            <li>Ljungo <span id="Ljungo">1</span></li>
+            <li>Raz <span id="Raz">0</span></li>
+        </ul>
+    </section>
 
-    <h2>Saved Emblem</h2>
-    <img id="savedEmblem" src="" alt="Your saved emblem will appear here">
+    <section>
+        <h2>Draw Your Team Emblem</h2>
+        <canvas id="drawingCanvas" width="200" height="200"></canvas>
+
+        <div class="controls">
+            <label for="colorPicker">Brush Color: </label>
+            <input type="color" id="colorPicker" value="#000000">
+            <label for="brushSize">Brush Size: </label>
+            <input type="number" id="brushSize" value="3" min="1" max="10">
+            <button class="button" onclick="clearCanvas()">Clear</button>
+            <button class="button" onclick="saveDrawing()">Save</button>
+        </div>
+
+        <h2>Saved Emblem</h2>
+        <img id="savedEmblem" src="" alt="Your saved emblem will appear here">
+    </section>
+
+    <footer>
+        <p>&copy; 2023 Haxdags. All rights reserved.</p>
+    </footer>
 
     <script>
+        // Drawing functionality
         const canvas = document.getElementById('drawingCanvas');
         const ctx = canvas.getContext('2d');
         const colorPicker = document.getElementById('colorPicker');
@@ -39,7 +92,7 @@
 
         let isDrawing = false;
 
-        // Load saved emblem if exists
+        // Load saved emblem if it exists
         window.onload = () => {
             const savedImage = localStorage.getItem('emblem');
             if (savedImage) {
