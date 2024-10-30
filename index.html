@@ -68,12 +68,12 @@
     <section class="top-scorers">
         <h2>Top Goal Scorers</h2>
         <ul id="scorersList">
-            <li onclick="updateScore('Foos')"><span>Foos</span> <span id="Foos">3</span></li>
-            <li onclick="updateScore('Arne')"><span>Arne</span> <span id="Arne">2</span></li>
-            <li onclick="updateScore('Totti')"><span>Totti</span> <span id="Totti">2</span></li>
-            <li onclick="updateScore('LilGub')"><span>Lil' Gub</span> <span id="LilGub">1</span></li>
-            <li onclick="updateScore('Ljungo')"><span>Ljungo</span> <span id="Ljungo">1</span></li>
-            <li onclick="updateScore('Raz')"><span>Raz</span> <span id="Raz">0</span></li>
+            <li data-score="3" onclick="updateScore('Foos')"><span>Foos</span> <span id="Foos">3</span></li>
+            <li data-score="2" onclick="updateScore('Arne')"><span>Arne</span> <span id="Arne">2</span></li>
+            <li data-score="2" onclick="updateScore('Totti')"><span>Totti</span> <span id="Totti">2</span></li>
+            <li data-score="1" onclick="updateScore('LilGub')"><span>Lil' Gub</span> <span id="LilGub">1</span></li>
+            <li data-score="1" onclick="updateScore('Ljungo')"><span>Ljungo</span> <span id="Ljungo">1</span></li>
+            <li data-score="0" onclick="updateScore('Raz')"><span>Raz</span> <span id="Raz">0</span></li>
         </ul>
     </section>
 
@@ -92,6 +92,7 @@
                 const savedScore = localStorage.getItem(id);
                 if (savedScore !== null) document.getElementById(id).textContent = savedScore;
             });
+            sortScorers(); // Sort the scorers initially on page load
         };
 
         function toggleEditMode() {
@@ -126,7 +127,27 @@
             if (newScore !== null && !isNaN(newScore)) {
                 document.getElementById(id).textContent = newScore;
                 localStorage.setItem(id, newScore); // Save to localStorage
+                sortScorers(); // Re-sort scorers after an update
             }
+        }
+
+        // Function to sort the scorers list
+        function sortScorers() {
+            const scorersList = document.getElementById("scorersList");
+            const scorersArray = Array.from(scorersList.querySelectorAll("li"));
+
+            // Update data-score attribute to reflect current scores and then sort
+            scorersArray.forEach(li => {
+                const score = parseInt(li.querySelector("span[id]").textContent);
+                li.setAttribute("data-score", score);
+            });
+
+            // Sort by score in descending order
+            scorersArray.sort((a, b) => b.getAttribute("data-score") - a.getAttribute("data-score"));
+
+            // Clear and re-append the sorted list
+            scorersList.innerHTML = "";
+            scorersArray.forEach(li => scorersList.appendChild(li));
         }
     </script>
 </body>
