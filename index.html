@@ -156,4 +156,15 @@
 
             // Remove highlight from both teams
             document.getElementById('teamLeft').classList.remove('highlight');
-            document.getElementById('
+            document.getElementById('teamRight').classList.remove('highlight');
+
+            // Add highlight to the team with the higher score
+            if (teamLeftScore > teamRightScore) {
+                document.getElementById('teamLeft').classList.add('highlight');
+            } else if (teamRightScore > teamLeftScore) {
+                document.getElementById('teamRight').classList.add('highlight');
+            }
+        }
+    </script>
+</body>
+</html>
